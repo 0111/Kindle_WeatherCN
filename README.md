@@ -3,6 +3,21 @@ Kindle WeatherCN，中文台历系统
 原理：内置浏览器 访问H5页面
 
 # 操作方法一（无需越狱）
+## 第一步：下载解压Kindle_WeatherCN脚本
+
+## 第二步：将www目录发布到web站点
+
+## 第三步：原生浏览器中访问 http://website 即可
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist127-0-0-2.png)
+
+## 第四步：自定义设置所在城市 
+访问 http://website/config.html 
+
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-CitySetting.png)
+
+正确配置后，选择“应用配置”
+
+在新页面加载后，保存该书签即可。
 
 # 操作方法二（越狱+python3+Kindle_WeatherCN脚本）
 
