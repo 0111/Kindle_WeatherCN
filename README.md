@@ -39,6 +39,9 @@ Kindle磁盘
 
 ## 第七步：自定义设置所在城市 
 访问 http://127.0.0.2/config.html 
+
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-CitySetting.png)
+
 正确配置后，选择“应用配置”
 
 在新页面加载后，保存该书签即可。
