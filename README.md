@@ -8,10 +8,14 @@ Kindle WeatherCN，中文台历系统
 ## 第二步：将www目录发布到web站点
 
 ## 第三步：原生浏览器中访问 http://website 即可
+测试站点：https://0111.github.io/Kindle_WeatherCN/docs/
+
 ![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist127-0-0-2.png)
 
 ## 第四步：自定义设置所在城市 
-访问 http://website/config.html 
+访问页面 http://website/config.html 
+测试站点：https://0111.github.io/Kindle_WeatherCN/docs/config.html 
+
 
 ![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-CitySetting.png)
 
