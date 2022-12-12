@@ -5,8 +5,8 @@ Kindle WeatherCN，中文台历系统
 
 # 重要的第一步：关闭屏幕休眠模式
 点击，放大镜，搜索框中输入： ～ds 回车
+操作参考：https://bookfere.com/post/150.html
 
-参考：Kindle 使用小技巧之临时禁用休眠取消自动锁屏
 # 操作方法一（无需越狱）
 ## 第一步：下载解压Kindle_WeatherCN脚本
 
