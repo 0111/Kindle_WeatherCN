@@ -2,7 +2,7 @@
 Kindle WeatherCN，中文台历系统
 原理：内置浏览器 访问H5页面
 
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/00-Just.jpeg)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/00-JustSoso.jpg)
 
 # 重要的第一步：关闭屏幕休眠模式
 点击，放大镜，搜索框中输入： ～ds 回车
