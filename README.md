@@ -18,7 +18,7 @@ Kindle WeatherCN，中文台历系统
 
 Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
 
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/05-ChomeView.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/05-Chome_WebView.png)
 
 
 # 操作方法一（无需越狱）
