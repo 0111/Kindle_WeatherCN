@@ -27,7 +27,7 @@ Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
 ## 第二步：将www目录发布到web站点
 
 ## 第三步：原生浏览器中访问 http://website 即可
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist127-0-0-2.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist_127-0-0-2.png)
 
 ## 第四步：自定义设置所在城市 
 访问页面 http://website/config.html 
