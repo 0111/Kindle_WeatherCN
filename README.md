@@ -67,10 +67,10 @@ Kindle磁盘
 ```        
 ## 第五步：在KUAL中运行 “Kindle_WeatherCN”
 运行KUAL工具
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/01-RunKUAL.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/01-Run_KUAL-Plugin.png)
 
 启动 Kindle_WeatherCN服务
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/02-StartService.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/02-Start_KWService.png)
 
 
 ## 第六步：原生浏览器中访问 http://127.0.0.2 即可
