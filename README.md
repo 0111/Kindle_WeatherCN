@@ -9,6 +9,18 @@ Kindle WeatherCN，中文台历系统
 
 操作参考：https://bookfere.com/post/150.html
 
+## 测试站点
+测试站点：https://0111.github.io/Kindle_WeatherCN/docs/
+
+测试站点：https://0111.github.io/Kindle_WeatherCN/docs/config.html 
+
+可以复制这个短网址到kindle浏览器测试： http://dwz.win/a28n
+
+Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
+
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/05-ChomeView.png)
+
+
 # 操作方法一（无需越狱）
 ## 第一步：下载解压Kindle_WeatherCN脚本
 
@@ -27,17 +39,6 @@ Kindle WeatherCN，中文台历系统
 
 在新页面加载后，保存该书签即可。
 
-## 测试站点
-
-测试站点：https://0111.github.io/Kindle_WeatherCN/docs/
-
-测试站点：https://0111.github.io/Kindle_WeatherCN/docs/config.html 
-
-可以复制这个短网址到kindle浏览器测试： http://dwz.win/a28n
-
-Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
-
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/05-ChomeView.png)
 
 
 # 操作方法二（越狱+python3+Kindle_WeatherCN脚本）
