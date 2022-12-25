@@ -16,7 +16,7 @@ Kindle WeatherCN，中文台历系统
 
 可以复制这个短网址到kindle浏览器测试： https://dwz.win/a2Cy
 
-Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
+Chrome模拟600*700的显示屏效果（Kindle 7th大体一致）
 
 ![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/05-Chome_WebView.png)
 
