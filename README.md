@@ -74,7 +74,7 @@ Kindle磁盘
 
 
 ## 第六步：原生浏览器中访问 http://127.0.0.2 即可
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist127-0-0-2.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/03-WebVist_127-0-0-2.png)
 
 ## 第七步：自定义设置所在城市 
 访问 http://127.0.0.2/config.html 
