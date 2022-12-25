@@ -33,7 +33,7 @@ Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
 访问页面 http://website/config.html 
 
 
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-CitySetting.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-Setting_City.png)
 
 正确配置后，选择“应用配置”
 
@@ -66,10 +66,12 @@ Kindle磁盘
         └── www
 ```        
 ## 第五步：在KUAL中运行 “Kindle_WeatherCN”
-运行KUAL工具
+### 运行KUAL工具
+
 ![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/01-Run_KUAL-Plugin.png)
 
-启动 Kindle_WeatherCN服务
+### 启动 Kindle_WeatherCN服务
+
 ![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/02-Start_KWService.png)
 
 
@@ -79,7 +81,7 @@ Kindle磁盘
 ## 第七步：自定义设置所在城市 
 访问 http://127.0.0.2/config.html 
 
-![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-CitySetting.png)
+![Image text](https://raw.githubusercontent.com/0111/Kindle_WeatherCN/main/04-Setting_City.png)
 
 正确配置后，选择“应用配置”
 
