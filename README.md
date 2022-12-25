@@ -10,11 +10,11 @@ Kindle WeatherCN，中文台历系统
 操作参考：https://bookfere.com/post/150.html
 
 ## 测试站点
-测试站点：https://0111.github.io/Kindle_WeatherCN/docs/
+测试站点：https://0111.github.io/Kindle_WeatherCN
 
-测试站点：https://0111.github.io/Kindle_WeatherCN/docs/config.html 
+测试站点：https://0111.github.io/Kindle_WeatherCN/config.html 
 
-可以复制这个短网址到kindle浏览器测试： http://dwz.win/a28n
+可以复制这个短网址到kindle浏览器测试： https://dwz.win/a2Cy
 
 Chrome模拟700*800的显示屏效果（Kindle 7th大体一致）
 
