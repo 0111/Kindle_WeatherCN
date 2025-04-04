@@ -1,10 +1,8 @@
 @font-face {
     font-family: electronicFont;
-    src: url(./font/DS-DIGIB.ttf)
+    src: url(./solari-departures.ttf)
 }
-
-html,
-body {
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -54,7 +52,6 @@ html.night {
 
 #temp {
     font-size: 200px;
-    font-size: 18rem;
     display: inline-block;
     font-weight: bolder;
     text-align: center;
@@ -71,8 +68,7 @@ html.night {
     position: relative;
     top: 20%;
     left: 0%;
-    font-size: 50px;
-    font-size: 38rem;
+    font-size: 36rem;
     font-weight: bolder;
     text-align: center;
     font-family: electronicFont;
@@ -136,7 +132,6 @@ html.night {
     left: 3.3%;
     font-size: 50px;
     font-size: 7rem;
-
 }
 
 #sun {
@@ -150,7 +145,7 @@ html.night {
 
 .forecastIconWrapper {
     position: relative;
-    top: 5%;
+    top: 1%;
     left: 5%;
     font-size: 100px;
     font-size: 14.2rem;
@@ -158,7 +153,7 @@ html.night {
 
 .colTemp {
     position: relative;
-    top: 8%;
+    top: 1%;
     font-size: 50px;
     font-size: 8rem;
     font-weight:bolder;
@@ -166,13 +161,14 @@ html.night {
 
 .colTime {
     position: relative;
-    font-size: 35px;
-    font-size: 5rem;
+    font-size: 100px;
     margin-top: 5%;
     top: 1%;
+    font-family: electronicFont;
 }
 
 .colDesc {
+    top: 1%;
     font-size: 20px;
     font-size: 4rem;
     position: relative;
@@ -193,10 +189,9 @@ html.night {
 }
 
 .landscape #temp {
-    font-size: 141.7px;
-    font-size: 28rem;
+    font-size: 80px;
     font-weight: bolder;
-    text-align: center;
+    text-align: right;
 }
 
 .landscape #lastUpdate {
@@ -213,7 +208,6 @@ html.night {
     font-size: 100px;
     font-size: 25rem;
 }
-
 .landscape #date {
     font-size: 35.4px;
     font-size: 7rem;
@@ -235,15 +229,23 @@ html.night {
 }
 
 .landscape .colTime {
-    font-size: 25.3px;
-    font-size: 5rem;
+    font-size: 120px;
+    font-weight: bolder;
+    font-family: electronicFont;
 }
 
 .landscape .colDesc {
+    top: 1%;
     font-size: 14.2px;
     font-size: 2.8rem;
 }
 
 .landscape .col {
     width: 19.5%;
+}
+
+.feelsLike, .feelsLike * {
+    font-size: 24rem;
+    font-weight: bolder;
+    text-align: center;
 }
