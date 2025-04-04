@@ -10,6 +10,7 @@ Kindle WeatherCN，中文台历系统
 操作参考：https://bookfere.com/post/150.html
 
 ## 测试站点
+免插件版：直接访问=> https://kw6.netlify.app
 测试站点：https://0111.github.io/Kindle_WeatherCN
 
 测试站点：https://0111.github.io/Kindle_WeatherCN/config.html 
@@ -41,7 +42,7 @@ Chrome模拟600*700的显示屏效果（Kindle 7th大体一致）
 
 
 
-# 操作方法二（越狱+python3+Kindle_WeatherCN脚本）
+# （已经废弃）操作方法二（越狱+python3+Kindle_WeatherCN脚本）
 
 ## 第一步：越狱
 https://bookfere.com/post/970.html
