@@ -11,6 +11,7 @@ Kindle WeatherCN，中文台历系统
 
 ## 测试站点
 免插件版：直接访问=> https://kw6.netlify.app
+
 测试站点：https://0111.github.io/Kindle_WeatherCN
 
 测试站点：https://0111.github.io/Kindle_WeatherCN/config.html 
