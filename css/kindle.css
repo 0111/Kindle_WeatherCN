@@ -2,6 +2,11 @@
     font-family: electronicFont;
     src: url("./solari-departures.ttf")
 }
+
+@font-face {
+    font-family: DigFont;
+    src: url("./neat-lcd.ttf")
+}
 html, body {
     height: 100%;
     margin: 0;
@@ -41,34 +46,32 @@ html.night {
 }
 
 #city {
-    font-size: 50px;
     font-size: 7rem;
     position: absolute;
-    top: 1.5%;
-    right: 3%;
+    top: 0%;
+    right: 1%;
     text-decoration: none;
     text-align: right;
 }
 
 #temp {
-    font-size: 200px;
-    display: inline-block;
+    font-size: 22rem;
     font-weight: bolder;
-    text-align: center;
-    font-family: electronicFont;
+    text-align: left;
+    font-family: electronicFont; /* Use the DigFont for the temperature display */
 }
 
 .tempWrapper {
-    position: absolute;
-    right: 3%;
-    top: 8%;
+    position: absolute; /* to align with the city */
+    right: 1%;
+    top: 6%;
 }
 
 #lastUpdate {
     position: relative;
-    top: 20%;
-    left: 0%;
-    font-size: 36rem;
+    top: 4%;
+    left: 2%;
+    font-size: 40rem;
     font-weight: bolder;
     text-align: center;
     font-family: electronicFont;
@@ -76,33 +79,33 @@ html.night {
 
 #description {
     position: absolute;
-    left: 32%;
-    top: 2%;
-    font-size: 50px;
+    top: 1%;
+    left: 1%;
     font-size: 7rem;
     font-weight: bolder;
     text-align: left;
 }
 
 #icon {
-    font-size: 100px;
-    font-size: 20rem;
+    display: flex;
+    font-size: 20rem;    
 }
 
 #iconWrapper {
-    position: absolute;
-    left: 3%;
-    top: 3%;
+    position: relative;
+    left: 2%;
+    top: 8%;
 }
 
 .forecast {
-    position: absolute;
+    position: relative;
+    top: -3%;
     width: 100%;
     bottom: 7%;
     left: 0;
     border-top: 5px solid black;
     border-bottom: 1px solid black;
-    height: 39%;
+    height: 32rem;
 }
 
 .night .forecast {
@@ -135,41 +138,39 @@ html.night {
 }
 
 #sun {
-    position: absolute;
-    bottom: 0%;
+    position: relative;
+    top: -2%;
     left: 3%;
-    font-size: 30px;
-    font-size: 4.9rem;
+    font-size: 5rem;
     font-weight:bolder;
 }
 
 .forecastIconWrapper {
     position: relative;
-    top: 1%;
+    top: 3%;
     left: 5%;
-    font-size: 100px;
-    font-size: 14.2rem;
+    font-size: 12rem;
+
 }
 
 .colTemp {
     position: relative;
-    top: 1%;
-    font-size: 50px;
-    font-size: 8rem;
+    top: -2%;
+    font-size: 4rem;
     font-weight:bolder;
 }
 
 .colTime {
     position: relative;
-    font-size: 100px;
-    margin-top: 5%;
-    top: 1%;
+    font-size: 10rem;
+    left:3%;
+    font-weight: bolder;
+    text-align: center;
     font-family: electronicFont;
 }
 
 .colDesc {
-    top: 1%;
-    font-size: 20px;
+    top: -2%;
     font-size: 4rem;
     position: relative;
     bottom: -10%;
@@ -184,7 +185,6 @@ html.night {
 }
 
 .landscape #city {
-    font-size: 35.4px;
     font-size: 7rem;
 }
 
@@ -245,7 +245,7 @@ html.night {
 }
 
 .feelsLike, .feelsLike * {
-    font-size: 24rem;
+    font-size: 4rem;
     font-weight: bolder;
     text-align: center;
 }

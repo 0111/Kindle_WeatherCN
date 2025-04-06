@@ -103,13 +103,6 @@
                 var feelsLike = tempType == "feelsLike";
 
                 forecastsCells[i].temp.innerHTML = (feelsLike ? Math.round(forecast.main.feels_like) : Math.round(forecast.main.temp)) + unitsSymbolHtml;
-                
-                // tt = (feelsLike ? Math.round(forecast.main.feels_like) : Math.round(forecast.main.temp)) + unitsSymbolHtml;
-                // description = document.getElementById("description");
-                // cc = description.innerText.split('\n\n')[0] 
-                // description.innerHTML = cc + "<br><br>" + tt;
-                // forecastsCells[i].temp.innerHTML = Math.round(forecast.main.temp) + unitsSymbolHtml;
-
                 forecastsCells[i].icon.className = getIconClassName(forecast.weather[0], new Date(forecast.dt * 1000));
                 forecastsCells[i].desc.innerHTML = forecast.weather[0].description;
                 forecastsCells[i].time.innerHTML = momentWithCorrectUtcOffset(new Date(forecast.dt * 1000)).format(timeFormat);
@@ -135,16 +128,16 @@
 
         function setsUnitsSymbolFromApiUrl(url) {
             if (url.indexOf("units=metric") >= 0) {
-                unitsSymbolHtml = "<i class='wi wi-celsius'></i>";
+                unitsSymbolHtml = "℃";
                 return
             }
 
             if (url.indexOf("units=imperial") >= 0) {
-                unitsSymbolHtml = "<i class='wi wi-fahrenheit'></i>";
+                unitsSymbolHtml = "℉";
                 return
             }
 
-            unitsSymbolHtml = "<span>K</span>";
+            unitsSymbolHtml = "K";
             return
         }
 
@@ -218,28 +211,20 @@
             icon.style.webkitTransform = null;
             temp = document.getElementById("temp");
             temp.innerHTML = feelsLike ? Math.round(data.main.feels_like) : Math.round(data.main.temp);
-
             temp.innerHTML = momentWithCorrectUtcOffset(new Date()).format("MM-DD");
-
             tt = feelsLike ? Math.round(data.main.feels_like) : Math.round(data.main.temp);
             temp.className = feelsLike ? "feelsLike" : "";
             city.innerHTML = data.name;
             description = document.getElementById("description");
-            description.innerHTML = data.weather[0].description + "<br><br>" + tt + unitsSymbolHtml;
-
-            //原始的  lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date()).format(timeFormat) + "/" + momentWithCorrectUtcOffset(new Date(data.dt * 1000)).format(timeFormat);
-
+            description.innerText = data.weather[0].description + tt + unitsSymbolHtml;
             lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date()).format("HH:mm");
-            // date.innerHTML = momentWithCorrectUtcOffset(new Date()).format("dd, ll");
-
             var sunrise = momentWithCorrectUtcOffset(new Date(data.sys.sunrise * 1000));
             var sunset = momentWithCorrectUtcOffset(new Date(data.sys.sunset * 1000));
 
             _sunriseHour = sunrise.hour();
             _sunsetHour = sunset.hour();
 
-            sun.innerHTML = momentWithCorrectUtcOffset(new Date()).format("第WW周")+ "&nbsp;&nbsp;&nbsp;<i class='wi wi-sunrise'></i>&nbsp;" +  sunrise.format(timeFormat)
-                    + "&nbsp;&nbsp;&nbsp;<i class='wi wi-sunset'></i> " + sunset.format(timeFormat) + "&nbsp;&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date()).format("dddd");
+            sun.innerHTML = momentWithCorrectUtcOffset(new Date()).format("第WW周")+ "&nbsp;&nbsp;" + sunrise.format(timeFormat) + "<i class='wi wi-sunrise'></i>&nbsp;&nbsp;&nbsp;" + sunset.format(timeFormat) + "<i class='wi wi-sunset'></i> "  + "&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date()).format("dddd");
             //  alert(data.name);
             setNightMode();
             setMoonIconsRotation(data.coord.lat)
