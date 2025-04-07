@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <title>Kindle天气台历</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -7,60 +8,51 @@
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
     <meta http-equiv="expires" content="0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <meta name="viewport"
-          content="width=320, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=0">
     <script src="vendor/moment/moment-with-locales.js" type="text/javascript"></script>
     <script src="config.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="vendor/weathericons/css/weather-icons.css"/>
-    <link rel="stylesheet" type="text/css" href="css/custom-icons.css"/>
-    <link rel="stylesheet" type="text/css" href="css/kindle.css"/>
+    <link rel="stylesheet" type="text/css" href="vendor/weathericons/css/weather-icons.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom-icons.css" />
+    <link rel="stylesheet" type="text/css" href="css/kindle.css" />
 
     <script type="text/javascript">
         var apiProtocol = window.location.protocol === 'file:' ? 'https:' : window.location.protocol;
-
+        DT_Times = 0;
+        Local_Timstamp = 0;
         var jsonp = function () {
             return {
                 // JSONP Request
                 request: function (src, callback, id) {
                     try {
-
                         var self = this,
                             script = null;
-
                         self.done = false;
-
                         if (typeof id === "undefined") {
                             id = "jsonp";
                         }
-
                         if (document.getElementById(id) !== null) {
                             script = document.getElementById(id);
                             document.body.removeChild(script);
                         }
-
                         script = document.createElement('script');
                         script.type = 'application/javascript';
                         script.id = id;
                         script.src = src;
                         script.onload = function () {
                             console.log("onload");
-
                             if (typeof callback !== "undefined") {
                                 callback(self.responseObject);
                             }
-
                             script.onload = null;
                             document.body.removeChild(script);
                             script = null;
                         };
-
                         document.body.appendChild(script);
                     } catch (exception) {
                         console.log(exception);
                     }
                 },
 
-                // JSONP Response
                 response: function (response) {
                     try {
                         this.responseObject = response;
@@ -71,8 +63,8 @@
             }
         }();
 
-
         function refreshActualWeather() {
+            Local_Timstamp = (new Date()).getTime();
             jsonp.request(apiProtocol + "//api.openweathermap.org/data/2.5/weather?" + _apiParams + "&callback=jsonp.response" + "&_timestamp=" + (new Date()).getTime()
                 , function (data) {
                     processActualWeather(data);
@@ -86,22 +78,28 @@
                 }, "forecast");
         }
 
+
+        function refresTT() {
+            tt = momentWithCorrectUtcOffset(new Date() - DT_Times).format("HH:mm");
+            lastUpdate = document.getElementById("lastUpdate");
+            lastUpdate.innerHTML = tt;
+            console.log("refresTT:", tt);
+            window.setTimeout("refresTT()", 30 * 1000);
+        }
+
         function refreshData() {
             setNightMode();
             refreshActualWeather();
             refreshForecastWeather();
-
             window.setTimeout("refreshData()", refreshTime);
         }
 
-        function processForecastWeather(data) {
-            dataTimeZone = data.city.timezone
 
+        function processForecastWeather(data) {
+            dataTimeZone = data.city.timezone;
             for (var i = 0; i < forecastCount; i++) {
                 var forecast = data.list[i];
-
                 var feelsLike = tempType == "feelsLike";
-
                 forecastsCells[i].temp.innerHTML = (feelsLike ? Math.round(forecast.main.feels_like) : Math.round(forecast.main.temp)) + unitsSymbolHtml;
                 forecastsCells[i].icon.className = getIconClassName(forecast.weather[0], new Date(forecast.dt * 1000));
                 forecastsCells[i].desc.innerHTML = forecast.weather[0].description;
@@ -110,8 +108,7 @@
                 forecastsCells[i].icon.style.transform = null;
                 forecastsCells[i].icon.style.webkitTransform = null;
             }
-
-            setMoonIconsRotation(data.city.coord.lat)
+            setMoonIconsRotation(data.city.coord.lat);
         }
 
         function getIconClassName(weather, date) {
@@ -122,29 +119,26 @@
                 var icon = getMoonIconClasses(phase, isNightMode());
                 return icon;
             }
-
             return "wi wi-owm-" + (isNight ? "night-" : "day-") + weather.id;
         }
 
         function setsUnitsSymbolFromApiUrl(url) {
             if (url.indexOf("units=metric") >= 0) {
                 unitsSymbolHtml = "℃";
-                return
+                return;
             }
-
             if (url.indexOf("units=imperial") >= 0) {
                 unitsSymbolHtml = "℉";
-                return
+                return;
             }
-
             unitsSymbolHtml = "K";
-            return
+            return;
         }
 
         function getApiParams() {
             if (getUrlParameter("api_params")) {
                 var url = getUrlParameter("api_params");
-                setsUnitsSymbolFromApiUrl(url)
+                setsUnitsSymbolFromApiUrl(url);
                 return url;
             }
 
@@ -156,7 +150,7 @@
 
             var appId = getUrlParameter("appId") ? getUrlParameter("appId") : api_appId;
             lang = getUrlParameter("lang") ? getUrlParameter("lang") : api_lang;
-            if (typeof(lang) === 'string') {
+            if (typeof (lang) === 'string') {
                 lang = lang.split(";", 1)
             }
             var units = getUrlParameter("units") ? getUrlParameter("units") : api_units;
@@ -204,40 +198,43 @@
         };
 
         function processActualWeather(data) {
-            dataTimeZone = data.timezone
+            netTimeStamp = data.dt * 1000;
+            DT_Times = Local_Timstamp - netTimeStamp;
+            console.log("netTimeStamp dt:", netTimeStamp);
+            console.log("Local_Timstamp:", Local_Timstamp);
+            console.log("DT_Times:", DT_Times);
+            if(Math.abs(DT_Times) > 999){
+                console.log("网络时差较大:", DT_Times);
+            }
+            dataTimeZone = data.timezone;
+
+
             var feelsLike = tempType == "feelsLike";
             icon.className = getIconClassName(data.weather[0], new Date(data.dt * 1000));
             icon.style.transform = null;
             icon.style.webkitTransform = null;
-            temp = document.getElementById("temp");
-            temp.innerHTML = feelsLike ? Math.round(data.main.feels_like) : Math.round(data.main.temp);
-            temp.innerHTML = momentWithCorrectUtcOffset(new Date()).format("MM-DD");
+
             tt = feelsLike ? Math.round(data.main.feels_like) : Math.round(data.main.temp);
+            temp = document.getElementById("temp");
+            temp.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format("MM-DD");;
             temp.className = feelsLike ? "feelsLike" : "";
             city.innerHTML = data.name;
             description = document.getElementById("description");
             description.innerText = data.weather[0].description + tt + unitsSymbolHtml;
-            lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date()).format("HH:mm");
-            var sunrise = momentWithCorrectUtcOffset(new Date(data.sys.sunrise * 1000));
-            var sunset = momentWithCorrectUtcOffset(new Date(data.sys.sunset * 1000));
 
+            var sunrise = momentWithCorrectUtcOffset(new Date(data.sys.sunrise * 1000) );
+            var sunset = momentWithCorrectUtcOffset(new Date(data.sys.sunset * 1000));
             _sunriseHour = sunrise.hour();
             _sunsetHour = sunset.hour();
 
-            sun.innerHTML = momentWithCorrectUtcOffset(new Date()).format("第WW周")+ "&nbsp;&nbsp;" + sunrise.format(timeFormat) + "<i class='wi wi-sunrise'></i>&nbsp;&nbsp;&nbsp;" + sunset.format(timeFormat) + "<i class='wi wi-sunset'></i> "  + "&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date()).format("dddd");
+            lastUpdate = document.getElementById("lastUpdate");
+            lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format(timeFormat);
+            sun.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format("第WW周") + "&nbsp;&nbsp;" + sunrise.format(timeFormat) + "<i class='wi wi-sunrise'></i>&nbsp;&nbsp;&nbsp;" + sunset.format(timeFormat) + "<i class='wi wi-sunset'></i> " + "&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date() - DT_Times).format("dddd");
             //  alert(data.name);
             setNightMode();
-            setMoonIconsRotation(data.coord.lat)
+            setMoonIconsRotation(data.coord.lat);
         }
 
-        /**
-         * http://www.ben-daglish.net/moon.shtml
-         * @param year
-         * @param month
-         * @param day
-         * @returns {number} They all return a single value - the phase day (0 to 1, where 0=new moon, 0.5=full etc.) for the selected date.
-         * @constructor
-         */
         function getMoonPhase(year, month, day) {
             var lp = 2551443;
             var now = new Date(year, month - 1, day, 20, 35, 0);
@@ -253,9 +250,6 @@
             return phase / lp;
         }
 
-        /**
-         * @return {number} They all return a single value - the phase day (0 to 1, where 0=new moon, 0.5=full etc.) for the selected date.
-         */
         function getCurrentMoonPhase() {
             var now = new Date();
             return getMoonPhase(now.getFullYear(), now.getMonth() + 1, now.getDate());
@@ -264,7 +258,6 @@
         function getMoonIconClasses(phase, isNightMode) {
             var iconInterval = 1 / moonIcons.length;
             var index = Math.floor(phase / iconInterval)
-
             return "wi " + moonIcons[index][isNightMode ? 1 : 0] + " moonIcon " + (phase < 0.5 ? "moonFirstHalf" : "moonSecondHalf");
         }
 
@@ -273,7 +266,7 @@
             var elements = document.getElementsByClassName("moonIcon")
 
             for (var i = 0; i < elements.length; i++) {
-                var direction = elements[i].className.indexOf("moonFirstHalf") !== -1 ? -1 : 1 
+                var direction = elements[i].className.indexOf("moonFirstHalf") !== -1 ? -1 : 1
                 var transform = "rotate(" + (rotation * direction) + "deg)"
                 elements[i].style.transform = transform;
                 elements[i].style.webkitTransform = transform;
@@ -290,60 +283,47 @@
         var date = null;
         var sun = null;
         var lang = null;
-
         var forecastsCells = null;
-
         var forecastCount = 5;
         var forcedRotation = false;
-
         var unitsSymbolHtml = "";
-
-        // [normal, night]
         var moonIcons = [
             ["wi-moon-alt-new", "wi-moon-alt-full"],
-            ["wi-moon-alt-waxing-crescent-1","wi-moon-alt-waning-gibbous-1"],
-            ["wi-moon-alt-waxing-crescent-2","wi-moon-alt-waning-gibbous-2"],
-            ["wi-moon-alt-waxing-crescent-3","wi-moon-alt-waning-gibbous-3"],
-            ["wi-moon-alt-waxing-crescent-4","wi-moon-alt-waning-gibbous-4"],
-            ["wi-moon-alt-waxing-crescent-5","wi-moon-alt-waning-gibbous-5"],
-            ["wi-moon-alt-waxing-crescent-6","wi-moon-alt-waning-gibbous-6"],
-            ["wi-moon-alt-first-quarter","wi-moon-alt-third-quarter"],
-            ["wi-moon-alt-waxing-gibbous-1","wi-moon-alt-waning-crescent-1"],
-            ["wi-moon-alt-waxing-gibbous-2","wi-moon-alt-waning-crescent-2"],
-            ["wi-moon-alt-waxing-gibbous-3","wi-moon-alt-waning-crescent-3"],
-            ["wi-moon-alt-waxing-gibbous-4","wi-moon-alt-waning-crescent-4"],
-            ["wi-moon-alt-waxing-gibbous-5","wi-moon-alt-waning-crescent-5"],
-            ["wi-moon-alt-waxing-gibbous-6","wi-moon-alt-waning-crescent-6"],
-            ["wi-moon-alt-full","wi-moon-alt-new"],
-            ["wi-moon-alt-waning-gibbous-1","wi-moon-alt-waxing-crescent-1"],
-            ["wi-moon-alt-waning-gibbous-2","wi-moon-alt-waxing-crescent-2"],
-            ["wi-moon-alt-waning-gibbous-3","wi-moon-alt-waxing-crescent-3"],
-            ["wi-moon-alt-waning-gibbous-4","wi-moon-alt-waxing-crescent-4"],
-            ["wi-moon-alt-waning-gibbous-5","wi-moon-alt-waxing-crescent-5"],
-            ["wi-moon-alt-waning-gibbous-6","wi-moon-alt-waxing-crescent-6"],
-            ["wi-moon-alt-third-quarter","wi-moon-alt-first-quarter"],
-            ["wi-moon-alt-waning-crescent-1","wi-moon-alt-waxing-gibbous-1"],
-            ["wi-moon-alt-waning-crescent-2","wi-moon-alt-waxing-gibbous-2"],
-            ["wi-moon-alt-waning-crescent-3","wi-moon-alt-waxing-gibbous-3"],
-            ["wi-moon-alt-waning-crescent-4","wi-moon-alt-waxing-gibbous-4"],
-            ["wi-moon-alt-waning-crescent-5","wi-moon-alt-waxing-gibbous-5"],
-            ["wi-moon-alt-waning-crescent-6","wi-moon-alt-waxing-gibbous-6"],
+            ["wi-moon-alt-waxing-crescent-1", "wi-moon-alt-waning-gibbous-1"],
+            ["wi-moon-alt-waxing-crescent-2", "wi-moon-alt-waning-gibbous-2"],
+            ["wi-moon-alt-waxing-crescent-3", "wi-moon-alt-waning-gibbous-3"],
+            ["wi-moon-alt-waxing-crescent-4", "wi-moon-alt-waning-gibbous-4"],
+            ["wi-moon-alt-waxing-crescent-5", "wi-moon-alt-waning-gibbous-5"],
+            ["wi-moon-alt-waxing-crescent-6", "wi-moon-alt-waning-gibbous-6"],
+            ["wi-moon-alt-first-quarter", "wi-moon-alt-third-quarter"],
+            ["wi-moon-alt-waxing-gibbous-1", "wi-moon-alt-waning-crescent-1"],
+            ["wi-moon-alt-waxing-gibbous-2", "wi-moon-alt-waning-crescent-2"],
+            ["wi-moon-alt-waxing-gibbous-3", "wi-moon-alt-waning-crescent-3"],
+            ["wi-moon-alt-waxing-gibbous-4", "wi-moon-alt-waning-crescent-4"],
+            ["wi-moon-alt-waxing-gibbous-5", "wi-moon-alt-waning-crescent-5"],
+            ["wi-moon-alt-waxing-gibbous-6", "wi-moon-alt-waning-crescent-6"],
+            ["wi-moon-alt-full", "wi-moon-alt-new"],
+            ["wi-moon-alt-waning-gibbous-1", "wi-moon-alt-waxing-crescent-1"],
+            ["wi-moon-alt-waning-gibbous-2", "wi-moon-alt-waxing-crescent-2"],
+            ["wi-moon-alt-waning-gibbous-3", "wi-moon-alt-waxing-crescent-3"],
+            ["wi-moon-alt-waning-gibbous-4", "wi-moon-alt-waxing-crescent-4"],
+            ["wi-moon-alt-waning-gibbous-5", "wi-moon-alt-waxing-crescent-5"],
+            ["wi-moon-alt-waning-gibbous-6", "wi-moon-alt-waxing-crescent-6"],
+            ["wi-moon-alt-third-quarter", "wi-moon-alt-first-quarter"],
+            ["wi-moon-alt-waning-crescent-1", "wi-moon-alt-waxing-gibbous-1"],
+            ["wi-moon-alt-waning-crescent-2", "wi-moon-alt-waxing-gibbous-2"],
+            ["wi-moon-alt-waning-crescent-3", "wi-moon-alt-waxing-gibbous-3"],
+            ["wi-moon-alt-waning-crescent-4", "wi-moon-alt-waxing-gibbous-4"],
+            ["wi-moon-alt-waning-crescent-5", "wi-moon-alt-waxing-gibbous-5"],
+            ["wi-moon-alt-waning-crescent-6", "wi-moon-alt-waxing-gibbous-6"],
         ];
-
         var timeFormat = "HH:mm";
-
-        // Config parameters.
         var api_params, api_appId, api_lang, api_units, api_locParams, rotation, night_mode, refreshTime, utcOffset, tempType;
-
         utcOffset = getUrlParameter("utcOffset") ? getUrlParameter("utcOffset") : utcOffset;
         tempType = getUrlParameter("tempType") ? getUrlParameter("tempType") : tempType;
-
         var dataTimeZone = 0;
-
-        // For night mode.
         var _sunsetHour = 18;
         var _sunriseHour = 6;
-
         var _apiParams = null;
 
         if (!refreshTime) {
@@ -352,52 +332,40 @@
 
         function rotate() {
             var rot = getUrlParameter("rotation") ? getUrlParameter("rotation") : rotation;
-
             var v = viewport();
             var isPortrait = v.height > v.width;
-
             if (isPortrait && rot === "ll") {
-                // landscape left
                 page.className = "landscape";
                 forcedRotation = true;
-
                 page.style.transform = "rotate(90deg)";
                 page.style.transformOrigin = "bottom left";
                 page.style.webkitTransform = "rotate(90deg)";
                 page.style.webkitTransformOrigin = "bottom left";
                 page.style.position = "absolute";
                 page.style.top = -v.width + "px";
-
                 page.style.height = v.width + "px";
                 page.style.width = v.height + "px";
             } else if (isPortrait && rot === "lr") {
-                // landscape right
                 page.className = "landscape";
                 forcedRotation = true;
-
                 page.style.transform = "rotate(-90deg)";
                 page.style.transformOrigin = "bottom right";
                 page.style.webkitTransform = "rotate(-90deg)";
                 page.style.webkitTransformOrigin = "top left";
                 page.style.position = "absolute";
                 page.style.top = v.height + "px";
-
                 page.style.height = v.width + "px";
                 page.style.width = v.height + "px";
             } else if (rot === "up") {
-                // upside down
                 page.className = isPortrait ? "portrait" : "landscape";
                 forcedRotation = false;
-
                 page.style.transform = "rotate(180deg)";
                 page.style.transformOrigin = "50% 50% 0";
                 page.style.webkitTransform = "rotate(180deg)";
                 page.style.webkitTransformOrigin = "50% 50% 0";
             } else {
-                // reset css:
                 page.className = isPortrait ? "portrait" : "landscape";
                 forcedRotation = false;
-
                 page.style.transform = "";
                 page.style.transformOrigin = "";
                 page.style.webkitTransform = "";
@@ -405,7 +373,6 @@
                 page.style.position = "";
                 page.style.top = "";
                 page.style.background = "";
-
                 page.style.height = "";
                 page.style.width = "";
             }
@@ -413,39 +380,32 @@
 
         window.addEventListener('load', function () {
             console.log("load");
-
             _apiParams = getApiParams();
             if (_apiParams === null) {
                 window.location = "config.html";
             }
 
             moment.locale(momentLocale());
-
             cleaner = document.getElementById("cleaner");
-
             page = document.getElementById("page");
-            // temp = document.getElementById("temp");
             description = document.getElementById("description");
-
             icon = document.getElementById("icon");
-
             city = document.getElementById("city");
             city.addEventListener('click', function (event) {
                 event.preventDefault();
-                window.location.href = window.location.href.replace("/index.html", "/config.html");
-                return false
+                // window.location.href = window.location.href.replace("/index.html", "/config.html");
+                window.location.href = "config.html"; // 直接跳转到配置页面
+                return false;
             });
             description.addEventListener('click', function (event) {
                 event.preventDefault();
                 var newHref = window.location.href.replace(/[&?]tempType=[^&]*/, "");
-                newHref = newHref + (newHref.indexOf("?") >= 0 ? "&" : "?") + "tempType=" + (tempType === "feelsLike" ? "actual" : "feelsLike")
-                window.location.href = newHref
-                return false
+                newHref = newHref + (newHref.indexOf("?") >= 0 ? "&" : "?") + "tempType=" + (tempType === "feelsLike" ? "actual" : "feelsLike");
+                window.location.href = newHref;
+                return false;
             });
             lastUpdate = document.getElementById("lastUpdate");
-            
             sun = document.getElementById("sun");
-
             forecastsCells = [];
             for (var i = 0; i < forecastCount; i++) {
                 forecastsCells.push({
@@ -456,15 +416,16 @@
                 });
             }
 
+            
             refreshData();
-
+            refresTT();
+            
             rotate();
             setRem("load");
             setNightMode();
 
-            // Set Cleanup for 4am
             var now = new Date();
-            var cleanTime = (new Date()).setHours(4,0,0);
+            var cleanTime = (new Date()).setHours(4, 0, 0);
             var diff = cleanTime - now;
             if (diff < 0) {
                 diff += 86400000;
@@ -472,30 +433,24 @@
             window.setTimeout("clearScreen()", diff);
         });
 
-        window.addEventListener("resize", function() {
+        window.addEventListener("resize", function () {
             rotate();
             setRem("resize");
         });
 
-        // Simulating vh an vw with rem: http://stackoverflow.com/questions/13948713/is-there-any-cross-browser-javascript-for-making-vh-and-vw-units-work
-        // But kindle 4 doesn't support rem (so all sizes are fixed fallback for kindle 4)
-        // Kindle 4 viewport: 600x706 (landscape 800x506) (in window.load event, window.resize event is not called)
-        // Paperwhite 3 viewport: 1072x1268 (in window.load event it is 0x0, in window.resized
         function viewport() {
             var e = window, a = 'inner';
-            if (!('innerWidth' in window )) {
+            if (!('innerWidth' in window)) {
                 a = 'client';
                 e = document.documentElement || document.body;
             }
-            return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+            return { width: e[a + 'Width'], height: e[a + 'Height'] };
         }
 
         function setRem(prefix) {
             var v = viewport();
             var root = document.querySelector(":root");
             root.style.fontSize = ((forcedRotation === false ? v.height : v.width) / 100) + "px";
-           // console.log("setting root font size to: " + v.height)
-          //  alert(prefix + " viewport:" + v.width + "x" + v.height);
         }
 
         function setNightMode() {
@@ -512,26 +467,20 @@
             if (mode === "on") {
                 return true;
             }
-
             if (mode === "auto") {
                 return isNight(_sunsetHour, _sunriseHour);
             }
-
             var found = mode && mode.match(/([0-9][0-9]?)-([0-9][0-9]?)/);
-
             if (found) {
                 return isNight(found[1], found[2]);
             }
-
             return false;
         }
 
         function isNight(f, t) {
             var from = parseInt(f);
             var to = parseInt(t);
-
-            var now = momentWithCorrectUtcOffset(new Date()).hour();
-
+            var now = momentWithCorrectUtcOffset(new Date() - DT_Times).hour();
             if (from > to) {
                 return from <= now || to > now;
             } else {
@@ -541,7 +490,7 @@
 
         function momentLocale() {
             var lang = getUrlParameter("lang") ? getUrlParameter("lang") : api_lang;
-            if (typeof(lang) === 'string') {
+            if (typeof (lang) === 'string') {
                 var langs = lang.split(";", 2)
                 return langs.length > 1 ? langs[1] : langs[0];
             } else {
@@ -550,7 +499,7 @@
         }
 
         function clearScreen(times) {
-            if (typeof(times) == 'undefined') {
+            if (typeof (times) == 'undefined') {
                 times = 5;
             }
 
@@ -568,9 +517,8 @@
         }
 
         function momentWithCorrectUtcOffset(dateTime) {
-            // Default is auto
-            if (typeof(utcOffset) === 'undefined' || utcOffset === null || utcOffset === "") {
-                return moment(dateTime).utcOffset(dataTimeZone / 60, false)
+            if (typeof (utcOffset) === 'undefined' || utcOffset === null || utcOffset === "") {
+                return moment(dateTime).utcOffset("+08:00")
             } else if (utcOffset === 'local') {
                 return moment(dateTime);
             } else {
@@ -584,50 +532,51 @@
 
 
 <body>
-<div id="page">
-    <a id="city" href="./config.html"></a>
-    <div id="iconWrapper"><i id="icon"></i></div>
-    <div class="tempWrapper">
-        <div id="temp"></div>
-        <!--<i class="celsius wi wi-celsius"></i>-->
+    <div id="page">
+        <a id="city" href="./config.html"></a>
+        <div id="iconWrapper"><i id="icon"></i></div>
+        <div class="tempWrapper">
+            <div id="temp"></div>
+            <!--<i class="celsius wi wi-celsius"></i>-->
+        </div>
+        <div id="description"></div>
+        <div id="lastUpdate"></div>
+        <div class="forecast">
+            <div class="col col1">
+                <div id="time1" class="colTime"></div>
+                <div class="forecastIconWrapper"><i id="icon1" class="colIcon"></i></div>
+                <div id="temp1" class="colTemp"></div>
+                <div id="desc1" class="colDesc"></div>
+            </div>
+            <div class="col col2">
+                <div id="time2" class="colTime"></div>
+                <div class="forecastIconWrapper"><i id="icon2" class="colIcon"></i></div>
+                <div id="temp2" class="colTemp"></div>
+                <div id="desc2" class="colDesc"></div>
+            </div>
+            <div class="col col3">
+                <div id="time3" class="colTime"></div>
+                <div class="forecastIconWrapper"><i id="icon3" class="colIcon"></i></div>
+                <div id="temp3" class="colTemp"></div>
+                <div id="desc3" class="colDesc"></div>
+            </div>
+            <div class="col col4">
+                <div id="time4" class="colTime"></div>
+                <div class="forecastIconWrapper"><i id="icon4" class="colIcon"></i></div>
+                <div id="temp4" class="colTemp"></div>
+                <div id="desc4" class="colDesc"></div>
+            </div>
+            <div class="col col5">
+                <div id="time5" class="colTime"></div>
+                <div class="forecastIconWrapper"><i id="icon5" class="colIcon"></i></div>
+                <div id="temp5" class="colTemp"></div>
+                <div id="desc5" class="colDesc"></div>
+            </div>
+        </div>
+
+        <div id="sun"></div>
     </div>
-    <div id="description"></div>
-    <div id="lastUpdate"></div>
-    <div class="forecast">
-        <div class="col col1">
-            <div id="time1" class="colTime"></div>
-            <div class="forecastIconWrapper"><i id="icon1" class="colIcon"></i></div>
-            <div id="temp1" class="colTemp"></div>
-            <div id="desc1" class="colDesc"></div>
-        </div>
-        <div class="col col2">
-            <div id="time2" class="colTime"></div>
-            <div class="forecastIconWrapper"><i id="icon2" class="colIcon"></i></div>
-            <div id="temp2" class="colTemp"></div>
-            <div id="desc2" class="colDesc"></div>
-        </div>
-        <div class="col col3">
-            <div id="time3" class="colTime"></div>
-            <div class="forecastIconWrapper"><i id="icon3" class="colIcon"></i></div>
-            <div id="temp3" class="colTemp"></div>
-            <div id="desc3" class="colDesc"></div>
-        </div>
-        <div class="col col4">
-            <div id="time4" class="colTime"></div>
-            <div class="forecastIconWrapper"><i id="icon4" class="colIcon"></i></div>
-            <div id="temp4" class="colTemp"></div>
-            <div id="desc4" class="colDesc"></div>
-        </div>
-        <div class="col col5">
-            <div id="time5" class="colTime"></div>
-            <div class="forecastIconWrapper"><i id="icon5" class="colIcon"></i></div>
-            <div id="temp5" class="colTemp"></div>
-            <div id="desc5" class="colDesc"></div>
-        </div>
-    </div>
-    
-    <div id="sun"></div>
-</div>
-<div id="cleaner"></div>
+    <div id="cleaner"></div>
 </body>
+
 </html>
