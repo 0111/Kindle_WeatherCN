@@ -57,7 +57,7 @@ html.night {
 #temp {
     position: absolute;
     top: 5%;
-    right: 0%;
+    right: -2%;
     font-size: 24rem;
     font-weight: bolder;
     text-align: left;
@@ -70,7 +70,7 @@ html.night {
 
 #lastUpdate {
     position: relative;
-    bottom: -8%;
+    top: 25%;
     left: 2%;
     font-size: 40rem;
     font-weight: bolder;
@@ -88,21 +88,22 @@ html.night {
 }
 
 #icon {
-    position: relative;
-    top: 3rem;
-    font-size: 16rem;    
+    position:absolute;
+    top: 10%;
+    left: 2%;
+    height: 20rem;
+    width: 20rem;
+    font-size: 20rem;    
 }
 
 #iconWrapper {
-    position: relative;
-    left: 2%;
-    top: 8%;
+    
 }
 
 .forecast {
     position: relative;
     left: 0;
-    bottom: 0%;
+    top: 17%;
     height: 32rem;
     border-top: 5px solid black;
     border-bottom: 5px solid black;
@@ -139,7 +140,7 @@ html.night {
 
 #sun {
     position: absolute;
-    bottom: 0%;
+    bottom: -0.5rem;
     left: 3%;
     font-size: 5rem;
     font-weight:bolder;
