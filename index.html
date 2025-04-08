@@ -18,7 +18,9 @@
     <script type="text/javascript">
         var apiProtocol = window.location.protocol === 'file:' ? 'https:' : window.location.protocol;
         DT_Times = 0;
-        Local_Timstamp = 0;
+        requestStartTime = 0;
+        requestEndTime = 0;
+
         var jsonp = function () {
             return {
                 // JSONP Request
@@ -64,7 +66,6 @@
         }();
 
         function refreshActualWeather() {
-            Local_Timstamp = (new Date()).getTime();
             jsonp.request(apiProtocol + "//api.openweathermap.org/data/2.5/weather?" + _apiParams + "&callback=jsonp.response" + "&_timestamp=" + (new Date()).getTime()
                 , function (data) {
                     processActualWeather(data);
@@ -78,16 +79,60 @@
                 }, "forecast");
         }
 
+        function getNISTTimestamp() {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) { // 请求完成
+                    requestEndTime = (new Date()).getTime();
+                    if (xhr.status === 200) { // 请求成功
+                        const responseText = xhr.responseText;
+                        const timeMatch = responseText.match(/time="(\d+)"/);
+                        if (timeMatch && timeMatch[1]) {
+                            serverTimestamp = parseInt(Number(timeMatch[1]) / 1000);
+                            net_DelyTime = requestEndTime - requestStartTime;
+                            net_OneWTime = parseInt(net_DelyTime / 2);
+                            net_ServerArrivalTime = requestStartTime + net_OneWTime;
+                            DT_Times = serverTimestamp - net_ServerArrivalTime;
+                            console.log('请求时间:', requestStartTime);
+                            console.log('响应时间:', requestEndTime);
+                            console.log('服务器时间戳:', serverTimestamp);
+                            console.log('时间误差:', DT_Times);
+
+                        } else {
+                            console.error('无法从响应中提取时间戳');
+                        }
+                    } else {
+                        console.error('请求失败。状态码:', xhr.status);
+                    }
+                }
+            };
+
+            requestStartTime = (new Date()).getTime();
+            xhr.open('GET', 'https://time.gov/widget/dhtml/at_nist_use_only.cgi?disablecache=' + (new Date()).getTime(), true);
+            /* Time_API1 = "https://time.gov/widget/dhtml/at_nist_use_only.cgi";
+            Time_API2 = "https://www.timeanddate.com/scripts/ts.php";
+            Time_API3 = "https://time.is/";
+            */
+
+            // 发送请求
+            try {
+                xhr.send();
+            } catch (error) {
+                console.error('发送请求时出错:', error);
+            }
+        }
+
 
         function refresTT() {
-            tt = momentWithCorrectUtcOffset(new Date() - DT_Times).format("HH:mm");
+            tt = momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).format("HH:mm");
             lastUpdate = document.getElementById("lastUpdate");
             lastUpdate.innerHTML = tt;
             console.log("refresTT:", tt);
-            window.setTimeout("refresTT()", 30 * 1000);
+            window.setTimeout("refresTT()", 15 * 1000);
         }
 
         function refreshData() {
+            getNISTTimestamp();
             setNightMode();
             refreshActualWeather();
             refreshForecastWeather();
@@ -198,17 +243,7 @@
         };
 
         function processActualWeather(data) {
-            netTimeStamp = data.dt * 1000;
-            DT_Times = Local_Timstamp - netTimeStamp;
-            console.log("netTimeStamp dt:", netTimeStamp);
-            console.log("Local_Timstamp:", Local_Timstamp);
-            console.log("DT_Times:", DT_Times);
-            if(Math.abs(DT_Times) > 999){
-                console.log("网络时差较大:", DT_Times);
-            }
             dataTimeZone = data.timezone;
-
-
             var feelsLike = tempType == "feelsLike";
             icon.className = getIconClassName(data.weather[0], new Date(data.dt * 1000));
             icon.style.transform = null;
@@ -216,20 +251,20 @@
 
             tt = feelsLike ? Math.round(data.main.feels_like) : Math.round(data.main.temp);
             temp = document.getElementById("temp");
-            temp.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format("MM-DD");;
+            temp.innerHTML = momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).format("MM-DD");;
             temp.className = feelsLike ? "feelsLike" : "";
             city.innerHTML = data.name;
             description = document.getElementById("description");
             description.innerText = data.weather[0].description + tt + unitsSymbolHtml;
 
-            var sunrise = momentWithCorrectUtcOffset(new Date(data.sys.sunrise * 1000) );
+            var sunrise = momentWithCorrectUtcOffset(new Date(data.sys.sunrise * 1000));
             var sunset = momentWithCorrectUtcOffset(new Date(data.sys.sunset * 1000));
             _sunriseHour = sunrise.hour();
             _sunsetHour = sunset.hour();
 
             lastUpdate = document.getElementById("lastUpdate");
-            lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format(timeFormat);
-            sun.innerHTML = momentWithCorrectUtcOffset(new Date() - DT_Times).format("第WW周") + "&nbsp;&nbsp;" + sunrise.format(timeFormat) + "<i class='wi wi-sunrise'></i>&nbsp;&nbsp;&nbsp;" + sunset.format(timeFormat) + "<i class='wi wi-sunset'></i> " + "&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date() - DT_Times).format("dddd");
+            lastUpdate.innerHTML = momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).format(timeFormat);
+            sun.innerHTML = momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).format("第WW周") + "&nbsp;&nbsp;" + sunrise.format(timeFormat) + "<i class='wi wi-sunrise'></i>&nbsp;&nbsp;&nbsp;" + sunset.format(timeFormat) + "<i class='wi wi-sunset'></i> " + "&nbsp;&nbsp;" + momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).format("dddd");
             //  alert(data.name);
             setNightMode();
             setMoonIconsRotation(data.coord.lat);
@@ -416,10 +451,10 @@
                 });
             }
 
-            
+
             refreshData();
             refresTT();
-            
+
             rotate();
             setRem("load");
             setNightMode();
@@ -480,7 +515,7 @@
         function isNight(f, t) {
             var from = parseInt(f);
             var to = parseInt(t);
-            var now = momentWithCorrectUtcOffset(new Date() - DT_Times).hour();
+            var now = momentWithCorrectUtcOffset(new Date(new Date().getTime() + DT_Times)).hour();
             if (from > to) {
                 return from <= now || to > now;
             } else {

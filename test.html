@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+    <script>
+        DT_Times = 0;
+        requestStartTime = 0;
+        requestEndTime = 0;
+    function getNISTTimestamp() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) { // 请求完成
+            requestEndTime = (new Date()).getTime();
+            if (xhr.status === 200) { // 请求成功
+              const responseText = xhr.responseText;
+              const timeMatch = responseText.match(/time="(\d+)"/);
+              if (timeMatch && timeMatch[1]) {
+                    serverTimestamp = parseInt(Number(timeMatch[1]) / 1000);
+                    net_DelyTime = requestEndTime - requestStartTime;
+                    net_OneWTime = parseInt(net_DelyTime / 2);
+                    net_ServerArrivalTime = requestStartTime + net_OneWTime;
+                    DT_Times = serverTimestamp - net_ServerArrivalTime;
+                    console.log('请求时间:', requestStartTime);
+                    console.log('响应时间:', requestEndTime);
+                    console.log('服务器时间戳:', serverTimestamp);
+                    console.log('时间误差:', DT_Times);
+                    
+                  } else {
+                    console.error('无法从响应中提取时间戳');
+                  }
+                } else {
+                  console.error('请求失败。状态码:', xhr.status);
+                }
+              }
+            };
+            
+            requestStartTime = (new Date()).getTime();
+        xhr.open('GET', 'https://time.gov/widget/dhtml/at_nist_use_only.cgi', true);
+        /* Time_API1 = "https://time.gov/widget/dhtml/at_nist_use_only.cgi";
+        Time_API2 = "https://www.timeanddate.com/scripts/ts.php";
+        Time_API3 = "https://time.is/";
+        */
+        
+        // 发送请求
+        try {
+          xhr.send();
+        } catch (error) {
+          console.error('发送请求时出错:', error);
+        }
+      }
+      
+      // 调用函数
+      getNISTTimestamp();
+    </script>
+<body>
+    <h1>获取 NIST 时间戳</h1>
+    <p id="abc">请查看控制台以获取提取的时间戳。</p>
+</body>
+</html>

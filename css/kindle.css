@@ -55,21 +55,22 @@ html.night {
 }
 
 #temp {
-    font-size: 22rem;
+    position: absolute;
+    top: 5%;
+    right: 0%;
+    font-size: 24rem;
     font-weight: bolder;
     text-align: left;
     font-family: electronicFont; /* Use the DigFont for the temperature display */
 }
 
 .tempWrapper {
-    position: absolute; /* to align with the city */
-    right: 1%;
-    top: 6%;
+    /* to align with the city */
 }
 
 #lastUpdate {
     position: relative;
-    top: 4%;
+    bottom: -8%;
     left: 2%;
     font-size: 40rem;
     font-weight: bolder;
@@ -81,14 +82,15 @@ html.night {
     position: absolute;
     top: 1%;
     left: 1%;
-    font-size: 7rem;
+    font-size: 6rem;
     font-weight: bolder;
     text-align: left;
 }
 
 #icon {
-    display: flex;
-    font-size: 20rem;    
+    position: relative;
+    top: 3rem;
+    font-size: 16rem;    
 }
 
 #iconWrapper {
@@ -100,7 +102,7 @@ html.night {
 .forecast {
     position: relative;
     left: 0;
-    top: -3rem;
+    bottom: 0%;
     height: 32rem;
     border-top: 5px solid black;
     border-bottom: 5px solid black;
@@ -136,8 +138,8 @@ html.night {
 }
 
 #sun {
-    position: relative;
-    top: -2.5%;
+    position: absolute;
+    bottom: 0%;
     left: 3%;
     font-size: 5rem;
     font-weight:bolder;
