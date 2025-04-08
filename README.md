@@ -10,6 +10,8 @@ Kindle WeatherCN，中文台历系统
 操作参考：https://bookfere.com/post/150.html
 
 ## 测试站点
+2025年的版本修复了，kindle本地时钟不准的问题，程序每30分钟会主动从互联网同步正确时间。
+
 免插件版：直接访问=> https://kw6.netlify.app
 
 测试站点：https://0111.github.io/Kindle_WeatherCN
