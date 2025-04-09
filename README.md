@@ -16,6 +16,8 @@ Kindle WeatherCN，中文台历系统
 
 直接访问=> https://kw6.netlify.app
 
+自定义设置：点击 页面“城市”，进入自定义参数设置，点击保存后生成配置参数，保存该网址即可。
+
 备用站点：
 
 测试站点：https://0111.github.io/Kindle_WeatherCN
