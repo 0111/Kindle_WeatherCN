@@ -56,11 +56,11 @@ html.night {
 
 #temp {
     position: absolute;
-    top: 5%;
+    top: 7%;
     right: -2%;
-    font-size: 24rem;
+    font-size: 22rem;
     font-weight: bolder;
-    text-align: left;
+    text-align: right;
     font-family: electronicFont; /* Use the DigFont for the temperature display */
 }
 
@@ -89,11 +89,11 @@ html.night {
 
 #icon {
     position:absolute;
-    top: 10%;
+    top: 12%;
     left: 2%;
     height: 20rem;
     width: 20rem;
-    font-size: 20rem;    
+    font-size: 18rem;    
 }
 
 #iconWrapper {
